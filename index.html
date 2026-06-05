@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entender para Atender | Valore SGI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #132147;
+      --navy-mid: #1e3470;
+      --gold: #c9a227;
+      --gold-light: #e2bc4a;
+      --green: #1a7a4a;
+      --green-light: #e8f7ef;
+      --red: #b52f2f;
+      --red-light: #fdf0f0;
+      --bg: #eef1f7;
+      --card: #ffffff;
+      --border: #d5dae8;
+      --text: #18253f;
+      --muted: #6b7a99;
+      --step-done: #d1dff7;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ─── HEADER ─── */
+    .app-header {
+      background: var(--navy);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+    .app-header .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .app-header .brand-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+    .app-header .brand-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #fff;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .app-header .score-pill {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    /* ─── PROGRESS BAR ─── */
+    .progress-wrap {
+      background: var(--navy-mid);
+      padding: 8px 24px 10px;
+    }
+    .progress-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+    .progress-bar-bg {
+      background: rgba(255,255,255,0.15);
+      border-radius: 4px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    .step-dots {
+      display: flex;
+      gap: 5px;
+      margin-top: 6px;
+    }
+    .step-dot {
+      width: 18px; height: 4px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.2);
+      transition: background 0.3s;
+    }
+    .step-dot.done { background: var(--gold); }
+    .step-dot.active { background: rgba(255,255,255,0.6); }
+
+    /* ─── LAYOUT ─── */
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    /* ─── CARD ─── */
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 28px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(19,33,71,0.07);
+    }
+
+    /* ─── INTRO SCREEN ─── */
+    .intro-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      border-radius: 16px;
+      padding: 52px 36px;
+      text-align: center;
+      color: white;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .intro-hero::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(201,162,39,0.08);
+    }
+    .intro-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -30px;
+      width: 250px; height: 250px;
+      border-radius: 50%;
+      background: rgba(201,162,39,0.06);
+    }
+    .company-badge {
+      display: inline-block;
+      background: rgba(201,162,39,0.2);
+      border: 1px solid rgba(201,162,39,0.4);
+      border-radius: 20px;
+      padding: 4px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 20px;
+    }
+    .intro-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: clamp(36px, 7vw, 60px);
+      line-height: 1.05;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      color: white;
+    }
+    .intro-title span { color: var(--gold-light); }
+    .intro-subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+    .intro-meta {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .intro-meta-item {
+      background: rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+    }
+    .intro-meta-item strong {
+      display: block;
+      font-size: 22px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      color: var(--gold-light);
+    }
+    .btn-primary {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--navy);
+      border: none;
+      border-radius: 8px;
+      padding: 14px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 0.3px;
+    }
+    .btn-primary:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+    .intro-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .info-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .info-card .info-icon {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+    .info-card .info-title {
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .info-card p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ─── BRIEFING ─── */
+    .briefing-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .briefing-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .briefing-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2px;
+    }
+    .briefing-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--navy);
+    }
+    .briefing-text {
+      font-size: 14.5px;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    .briefing-role {
+      background: var(--navy);
+      border-radius: 10px;
+      padding: 18px 20px;
+      color: white;
+      margin-bottom: 20px;
+    }
+    .briefing-role .role-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 6px;
+    }
+    .briefing-role p {
+      font-size: 14px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.88);
+      font-style: italic;
+    }
+    .mechanics-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .mechanics-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 13.5px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .step-num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: white;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ─── SITUATION CARD ─── */
+    .situation-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .situation-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .conformity-tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .tag-hidden { display: none; }
+    .tag-conforme { background: var(--green-light); color: var(--green); }
+    .tag-nao-conforme { background: var(--red-light); color: var(--red); }
+
+    .scenario-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--navy);
+      margin-bottom: 12px;
+    }
+    .scenario-text {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--text);
+      border-left: 3px solid var(--gold);
+      padding-left: 14px;
+    }
+
+    /* ─── STEP CARDS ─── */
+    .step-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 22px;
+      margin-bottom: 14px;
+    }
+    .step-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .step-badge {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-badge.done { background: var(--green); }
+    .step-question {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--navy);
+      line-height: 1.4;
+    }
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .option-btn {
+      width: 100%;
+      background: #f6f8fd;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      line-height: 1.5;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .opt-letter {
+      min-width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: background 0.2s;
+    }
+    .opt-text { flex: 1; }
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--navy);
+      background: #eef1f8;
+    }
+    .option-btn.correct {
+      background: var(--green-light);
+      border-color: var(--green);
+      color: var(--green);
+      font-weight: 600;
+    }
+    .option-btn.correct .opt-letter { background: var(--green); }
+    .option-btn.wrong {
+      background: var(--red-light);
+      border-color: var(--red);
+      color: var(--red);
+    }
+    .option-btn.wrong .opt-letter { background: var(--red); }
+    .option-btn:disabled { cursor: default; }
+
+    /* conformidade buttons */
+    .conform-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .conform-btn {
+      padding: 14px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background: #f6f8fd;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .conform-btn .conf-icon { font-size: 22px; }
+    .conform-btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .conform-btn.btn-conforme { color: var(--green); }
+    .conform-btn.btn-conforme:hover:not(:disabled) { border-color: var(--green); background: var(--green-light); }
+    .conform-btn.btn-nc { color: var(--red); }
+    .conform-btn.btn-nc:hover:not(:disabled) { border-color: var(--red); background: var(--red-light); }
+    .conform-btn.selected-conforme { border-color: var(--green); background: var(--green-light); }
+    .conform-btn.selected-nc { border-color: var(--red); background: var(--red-light); }
+    .conform-btn:disabled { cursor: default; }
+
+    /* ─── FEEDBACK BOX ─── */
+    .feedback-box {
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-size: 13.5px;
+      line-height: 1.65;
+      margin-top: 12px;
+      display: none;
+    }
+    .feedback-box.show { display: block; }
+    .feedback-box.fb-correct {
+      background: var(--green-light);
+      border: 1px solid #a8d5bc;
+      color: #135e35;
+    }
+    .feedback-box.fb-wrong {
+      background: var(--red-light);
+      border: 1px solid #e8b4b4;
+      color: #8b2020;
+    }
+    .fb-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+    .fb-correct-reveal {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      font-size: 13px;
+      color: #1a4a2e;
+    }
+
+    /* ─── MAIN FEEDBACK (step 3 reveal) ─── */
+    .main-feedback {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 12px;
+      display: none;
+    }
+    .main-feedback.show { display: block; }
+    .mf-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .mf-icon { font-size: 24px; }
+    .mf-req {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+    .mf-status {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: white;
+    }
+    .mf-text {
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.88);
+    }
+
+    /* ─── NAV BUTTON ─── */
+    .nav-btn {
+      width: 100%;
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: none;
+    }
+    .nav-btn.show { display: block; }
+    .nav-btn:hover { background: var(--navy-mid); transform: translateY(-1px); }
+
+    /* ─── RESULTS ─── */
+    .results-hero {
+      background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+      border-radius: 14px;
+      padding: 36px;
+      text-align: center;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .results-badge {
+      font-size: 52px;
+      margin-bottom: 8px;
+    }
+    .results-class {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 28px;
+      color: var(--gold-light);
+      margin-bottom: 4px;
+    }
+    .results-score-big {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 48px;
+      color: white;
+      line-height: 1;
+    }
+    .results-score-label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 4px;
+    }
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .results-table th {
+      background: var(--navy);
+      color: rgba(255,255,255,0.7);
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 10px 12px;
+      text-align: left;
+    }
+    .results-table th:first-child { border-radius: 8px 0 0 0; }
+    .results-table th:last-child { border-radius: 0 8px 0 0; text-align: center; }
+    .results-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .results-table tr:last-child td { border-bottom: none; }
+    .results-table tr:nth-child(even) td { background: #f8f9fc; }
+    .check { color: var(--green); font-weight: 700; }
+    .cross { color: var(--red); font-weight: 700; }
+    .pts-cell { text-align: center; font-weight: 700; color: var(--navy); }
+    .req-small { font-size: 11px; color: var(--muted); display: block; }
+
+    .restart-btn {
+      display: block;
+      width: 100%;
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background 0.2s;
+    }
+    .restart-btn:hover { background: var(--navy-mid); }
+
+    .score-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .score-bar-label { font-size: 12px; color: var(--muted); width: 110px; }
+    .score-bar {
+      flex: 1;
+      height: 8px;
+      background: var(--bg);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .score-bar-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 4px;
+    }
+    .score-bar-pts {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--navy);
+      width: 40px;
+      text-align: right;
+    }
+
+    @media (max-width: 520px) {
+      .card { padding: 18px; }
+      .intro-hero { padding: 36px 20px; }
+      .conform-btns { grid-template-columns: 1fr 1fr; }
+      .results-hero { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════════
+
+const reqNames = {
+  '4.1':   'Entendendo a Organização e seu Contexto',
+  '4.2':   'Partes Interessadas e seus Requisitos',
+  '5.1':   'Liderança e Comprometimento',
+  '5.2':   'Política',
+  '5.3':   'Papéis, Responsabilidades e Autoridades',
+  '5.4':   'Consulta e Participação dos Trabalhadores',
+  '6.1':   'Planejamento de Riscos e Oportunidades',
+  '6.1.2': 'Identificação de Perigos',
+  '6.1.3': 'Requisitos Legais e Outros Requisitos',
+  '6.2':   'Objetivos do SGI e Planejamento',
+  '7.1':   'Recursos',
+  '7.2':   'Competência',
+  '7.3':   'Conscientização',
+  '7.4':   'Comunicação',
+  '7.5':   'Informação Documentada',
+  '8.1':   'Planejamento e Controle Operacional',
+  '8.1.3': 'Gestão de Mudanças',
+  '8.2':   'Preparação e Resposta a Emergências',
+  '9.1':   'Monitoramento, Medição, Análise e Avaliação',
+  '9.2':   'Auditoria Interna',
+  '9.3':   'Análise Crítica pela Administração',
+  '10.2':  'Incidentes, NCs e Ações Corretivas',
+  'amd1':  '4.1 + Amd 1:2024 — Mudanças Climáticas',
+};
+
+const normTexts = {
+  '4.1':   'A organização deve determinar as questões internas e externas que sejam pertinentes para seu propósito e que afetem sua capacidade de alcançar os resultados pretendidos do sistema de gestão.',
+  '4.2':   'A organização deve determinar as partes interessadas que são relevantes para o SGI e as necessidades e expectativas dessas partes, que podem se tornar obrigações de conformidade para o sistema.',
+  '5.1':   'A Alta Direção deve demonstrar liderança e comprometimento com o SGI, garantindo que os resultados pretendidos sejam alcançados e que as responsabilidades e autoridades relevantes sejam atribuídas, comunicadas e entendidas.',
+  '5.2':   'A política deve ser mantida como informação documentada, comunicada dentro da organização, disponível para as partes interessadas e revisada periodicamente para assegurar que continue pertinente e apropriada à organização.',
+  '5.3':   'A Alta Direção deve garantir que as responsabilidades e autoridades para papéis relevantes sejam atribuídas, comunicadas e entendidas na organização e mantidas como informação documentada.',
+  '6.1':   'A organização deve determinar os riscos e oportunidades que precisam ser abordados para assegurar que o SGI alcance seus resultados pretendidos, prevenir efeitos indesejados e promover a melhoria contínua.',
+  '6.1.3': 'A organização deve manter informações documentadas de seus requisitos legais e outros requisitos, garantir que sejam atualizadas, e avaliar periodicamente o atendimento a essas obrigações de conformidade.',
+  '6.2':   'A organização deve estabelecer objetivos do SGI nas funções e níveis pertinentes. Os objetivos devem ser mensuráveis, monitorados, comunicados e atualizados, contemplando: o que será feito, os recursos, o responsável, o prazo e como os resultados serão avaliados.',
+  '7.1':   'A organização deve determinar e prover os recursos necessários para o estabelecimento, implementação, manutenção e melhoria contínua do sistema de gestão.',
+  '7.2':   'A organização deve determinar a competência necessária das pessoas que realizam trabalho sob seu controle e garantir que sejam competentes. Onde aplicável, deve avaliar a eficácia das ações tomadas para adquirir competência e reter evidências documentadas.',
+  '7.4':   'A organização deve estabelecer, implementar e manter processo(s) para comunicações internas e externas pertinentes ao SGI, incluindo: sobre o que comunicar, quando, com quem e como comunicar.',
+  '8.2':   'A organização deve estabelecer, implementar e manter processo(s) para preparar-se e responder a potenciais situações de emergência identificadas, incluindo a provisão de primeiros socorros e testes periódicos da capacidade de resposta.',
+  '9.2':   'A organização deve conduzir auditorias internas a intervalos planejados para verificar se o SGI está conforme com os requisitos. Os auditores não devem auditar seu próprio trabalho, assegurando objetividade e imparcialidade do processo.',
+  '9.3':   'A Alta Direção deve analisar criticamente o SGI a intervalos planejados para assegurar adequação, suficiência e eficácia. As entradas devem incluir: mudanças no contexto, desempenho do SGI, adequação dos recursos e eficácia das ações para riscos e oportunidades.',
+  '10.2':  'As ações corretivas devem ser apropriadas à significância dos efeitos dos incidentes ou das não conformidades. A organização deve reter informações documentadas como evidência das NCs, das ações tomadas e dos resultados — incluindo a eficácia das ações corretivas.',
+  '5.4':   'A organização deve estabelecer, implementar e manter processos para consulta e participação dos trabalhadores em todos os níveis e funções, no desenvolvimento, planejamento, implementação, avaliação do desempenho e ações de melhoria do sistema de gestão de SST.',
+  '6.1.2': 'A organização deve estabelecer, implementar e manter processo(s) para a identificação contínua e proativa de perigos, considerando como o trabalho é organizado, situações de emergência e mudanças na organização, processos, atividades ou equipamentos.',
+  '7.3':   'A organização deve garantir que as pessoas sob seu controle estejam conscientes: da política do SGI; dos objetivos pertinentes; de sua contribuição para a eficácia do SGI, incluindo os benefícios de um melhor desempenho; e das implicações de não estar conforme com os requisitos.',
+  '7.5':   'A organização deve criar e atualizar informações documentadas, controlando sua identificação, formato e meio, além de revisão e aprovação. Deve controlar distribuição, acesso, recuperação, uso, armazenamento, preservação e descarte, garantindo que versões pertinentes estejam disponíveis.',
+  '8.1':   'A organização deve planejar, implementar, controlar, manter e revisar os processos necessários para atender aos requisitos do SGI, estabelecendo critérios para os processos e implementando controles de acordo com os critérios estabelecidos.',
+  '8.1.3': 'A organização deve estabelecer um processo para implementação e controle de mudanças planejadas temporárias e permanentes que impactem o desempenho de SST, incluindo: novos produtos, serviços e processos; mudanças em equipamentos, locais de trabalho e organização do trabalho.',
+  '9.1':   'A organização deve monitorar, medir, analisar e avaliar seu desempenho, determinando: o que precisa ser monitorado e medido; os métodos aplicáveis; quando monitorar e medir; e quando os resultados devem ser analisados, avaliados e relatados.',
+  'amd1':  'A organização deve determinar se as mudanças climáticas são uma questão pertinente para seu propósito. Quando relevante, as mudanças climáticas devem ser incluídas como questão externa na análise de contexto, pois podem afetar a capacidade da organização de alcançar os resultados pretendidos do SGI. (ISO 14001:2015/Amd 1:2024)',
+};
+
+const situations = [
+  {
+    number: 1,
+    title: 'Análise do Contexto Organizacional',
+    correctReq: '4.1',
+    isConforming: true,
+    scenario: 'Em fevereiro de 2024, Ana Luiza Ferreira e a Dra. Sandra Oliveira conduziram a atualização do CTX-SGA-001. Usando metodologia SWOT combinada com análise PESTEL, identificaram fatores externos relevantes — como o endurecimento das licenças do IEMA e as crescentes exigências ESG dos clientes automotivos — e fatores internos, como a resistência da área de produção à integração do SGI e a operação em silos entre as equipes de Meio Ambiente e SST. O resultado foi documentado e está disponível como entrada para a Análise Crítica de dezembro.',
+    step1DistractorReqs: ['9.3', '6.2', '4.2'],
+    step1FeedbackCorrect: 'Correto. O cenário descreve a identificação e documentação de questões internas e externas que afetam o SGI — exatamente o que o requisito 4.1 determina.',
+    step1FeedbackWrong: 'Releia o cenário: a equipe está identificando fatores internos e externos que afetam o sistema de gestão. Pense em qual requisito trata especificamente disso.',
+    step2DistractorReqs: ['9.3', '6.2', '4.2'],
+    step2FeedbackCorrect: 'Correto! Esse trecho define o requisito 4.1 — análise do contexto organizacional.',
+    step2FeedbackWrong: 'Esse trecho é de outro requisito. Procure o que fala sobre questões internas e externas que afetam a capacidade do SGI de alcançar seus resultados.',
+    step3FeedbackCorrect: 'A Valore conduziu a análise de contexto com metodologia estruturada (SWOT + PESTEL), participação da alta direção e resultado documentado que alimentará a Análise Crítica. O CTX-SGA-001 (Rev. 01, fev/2024) atende plenamente ao requisito 4.1. Como especialista em SGI, use esse documento como base para identificar riscos e oportunidades que o sistema precisa endereçar.',
+    step3FeedbackWrong: 'A análise foi realizada com metodologia estruturada, documentada e conta com participação da diretoria. Isso está em plena conformidade com o requisito 4.1.',
+  },
+  {
+    number: 2,
+    title: 'Objetivos Ambientais — Ciclo 2025',
+    correctReq: '6.2',
+    isConforming: true,
+    scenario: 'Ao revisar o OBJ-SGA-001, você encontra os Objetivos 01 (redução do consumo de água) e 02 (redução de resíduos perigosos). Ambos possuem: indicador de desempenho definido, linha de base documentada, meta mensurável com percentual de redução, ações planejadas com responsáveis e prazos específicos, resultado do último monitoramento atualizado e recursos aprovados em orçamento. O Objetivo 01 já atingiu 3,8 m³/ton em novembro, avançando em direção à meta de 3,5 m³/ton para o ciclo 2025.',
+    step1DistractorReqs: ['7.1', '9.3', '6.1'],
+    step1FeedbackCorrect: 'Correto. Os objetivos com indicadores, metas, responsáveis e prazos documentados caracterizam o requisito 6.2.',
+    step1FeedbackWrong: 'O cenário apresenta objetivos com indicadores, metas, responsáveis, prazos e monitoramento. Qual requisito aborda especificamente a estrutura dos objetivos do SGI?',
+    step2DistractorReqs: ['7.1', '9.3', '6.1'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 6.2, que define o que os objetivos do SGI devem conter.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre objetivos mensuráveis, com responsável, prazo e forma de avaliação dos resultados.',
+    step3FeedbackCorrect: 'Os Objetivos 01 e 02 atendem a todos os critérios do requisito 6.2: são mensuráveis, têm indicadores com linha de base, metas, ações com responsáveis e prazos, e monitoramento atualizado. Como especialista em SGI, garanta que os objetivos do sistema sempre tenham esses elementos — sem eles, o objetivo vira intenção sem compromisso.',
+    step3FeedbackWrong: 'Os Objetivos 01 e 02 têm indicador, linha de base, meta, ações, responsáveis, prazos e monitoramento — atendem plenamente ao requisito 6.2.',
+  },
+  {
+    number: 3,
+    title: 'Diálogo Diário de Segurança — Usinagem',
+    correctReq: '7.4',
+    isConforming: true,
+    scenario: 'Todo início de turno na área de Usinagem da Valore, o líder conduz o Diálogo Diário de Segurança (DDS) com sua equipe. Nesta segunda-feira, ele repassa o episódio de pH fora do limite da semana anterior: explica o que aconteceu, qual foi a causa e quais controles foram restabelecidos. Oito operadores assinam a lista de presença. O DDS está previsto no Plano de Comunicação (COM-SGA-001) como canal de comunicação interna de MA e SST para colaboradores operacionais, com frequência diária e registro.',
+    step1DistractorReqs: ['7.2', '8.2', '10.2'],
+    step1FeedbackCorrect: 'Correto. O DDS é um processo de comunicação interna sobre o SGI — o requisito 7.4 em ação.',
+    step1FeedbackWrong: 'O cenário descreve um processo de comunicação interna de informações do SGI. Qual requisito estrutura o que, quando, com quem e como comunicar?',
+    step2DistractorReqs: ['7.2', '8.2', '4.2'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 7.4 — comunicação interna e externa pertinente ao SGI.',
+    step2FeedbackWrong: 'Esse trecho é de outro requisito. Procure o que fala sobre processo de comunicação: o que, quando, com quem e como comunicar.',
+    step3FeedbackCorrect: 'O DDS é um mecanismo efetivo de comunicação interna do SGI: conteúdo definido, frequência estabelecida, público-alvo determinado e registro mantido. Isso atende ao requisito 7.4. Como especialista em SGI, o DDS é uma das ferramentas mais poderosas para manter o sistema vivo na operação — e a Valore já o utiliza corretamente.',
+    step3FeedbackWrong: 'O DDS tem conteúdo, frequência, público e registro definidos — atende a todos os critérios do requisito 7.4. Este é um exemplo de boa prática da Valore.',
+  },
+  {
+    number: 4,
+    title: 'Resposta ao Vazamento de Fluido — 2.º Turno',
+    correctReq: '8.2',
+    isConforming: true,
+    scenario: 'Em outubro de 2025, durante o segundo turno na Usinagem, o operador Carlos Eduardo percebe um vazamento de fluido de corte escorrendo em direção ao ralo do setor. Imediatamente, aciona o ponto de alarme da área. A equipe isola a zona, usa o material absorvente do kit de emergência para conter o vazamento, e Carlos Eduardo comunica Rodrigo Martins (SST) pelo rádio. O ocorrido é registrado no formulário de quase-acidentes e o material absorvido é descartado como resíduo perigoso, conforme o PAE-SGA-001.',
+    step1DistractorReqs: ['10.2', '7.4', '6.1'],
+    step1FeedbackCorrect: 'Correto. A resposta ao vazamento, seguindo procedimento, é o requisito 8.2 — preparação e resposta a emergências.',
+    step1FeedbackWrong: 'A situação é um vazamento sendo contido conforme procedimento de emergência. Qual requisito aborda a preparação e a resposta a situações de emergência?',
+    step2DistractorReqs: ['10.2', '7.4', '6.1'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 8.2 — preparação e resposta a emergências.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre preparação e resposta a potenciais situações de emergência.',
+    step3FeedbackCorrect: 'A equipe respondeu corretamente: acionamento imediato, contenção com materiais disponíveis, comunicação ao responsável e registro do ocorrido. O requisito 8.2 não exige apenas que o processo exista em papel — exige que as pessoas saibam o que fazer quando acontece. Aqui, sabiam.',
+    step3FeedbackWrong: 'A resposta seguiu o processo de emergência: alarme acionado, contenção realizada, comunicação feita e registro efetuado. Isso está em conformidade com o requisito 8.2.',
+  },
+  {
+    number: 5,
+    title: 'Tratamento da NC 002/2025 — Efluente de Usinagem',
+    correctReq: '10.2',
+    isConforming: true,
+    scenario: 'Em abril de 2025, durante auditoria interna da Usinagem, Ana Luiza identificou pH do efluente em 5,8 — abaixo do limite mínimo de 6,0. O registro NC 002/2025 documenta: análise de causa raiz (bomba dosadora com entupimento parcial), ação corretiva (manutenção preventiva e calibração), responsável (Manutenção Industrial) e prazo (07/05/2025). A manutenção foi realizada em 06/05 e o monitoramento de 08/05 confirmou o retorno ao pH adequado. A avaliação de eficácia está registrada no RNC-SGA-2025.',
+    step1DistractorReqs: ['9.2', '6.1.3', '6.1'],
+    step1FeedbackCorrect: 'Correto. O tratamento completo de uma NC — com causa raiz, ação, prazo e verificação de eficácia — é o requisito 10.2.',
+    step1FeedbackWrong: 'O cenário descreve o ciclo completo de tratamento de uma não conformidade, da abertura ao encerramento com eficácia verificada. Qual requisito aborda isso?',
+    step2DistractorReqs: ['9.2', '6.1.3', '6.1'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 10.2 — NCs, ações corretivas e evidências de eficácia.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre ações corretivas, sua significância e a necessidade de documentar a eficácia.',
+    step3FeedbackCorrect: 'A NC 002/2025 foi tratada exemplarmente: causa raiz identificada, ação com responsável e prazo, execução dentro do prazo e eficácia verificada e registrada. O ciclo completo do requisito 10.2 foi cumprido. Compare com as NCs 001 e 003/2025 da Valore — mesmo requisito, resultados diferentes.',
+    step3FeedbackWrong: 'A NC 002/2025 cumpriu todo o ciclo: causa raiz, ação, prazo, execução e verificação de eficácia registrada. Isso está em plena conformidade com o requisito 10.2.',
+  },
+  {
+    number: 6,
+    title: 'Prestadores de Serviço no PI-SGA-001',
+    correctReq: '4.2',
+    isConforming: false,
+    scenario: 'Você solicita a Ana Luiza as evidências do levantamento de necessidades e expectativas dos prestadores de serviço permanentes no site da Valore — cerca de 60 pessoas. Ela apresenta o PI-SGA-001. Ao verificar a linha correspondente aos contratados, você encontra: "Expectativas: NÃO LEVANTADAS FORMALMENTE" e, na coluna de monitoramento: "NÃO MONITORADO ATUALMENTE". O próprio documento registra: "Expectativas não levantadas — necessitam de revisão."',
+    step1DistractorReqs: ['4.1', '7.2', '7.4'],
+    step1FeedbackCorrect: 'Correto. O cenário trata do levantamento de necessidades e expectativas de uma parte interessada — o que o requisito 4.2 exige.',
+    step1FeedbackWrong: 'O cenário fala de prestadores cujas expectativas não foram identificadas. Qual requisito determina que a organização identifique as necessidades e expectativas das partes interessadas relevantes?',
+    step2DistractorReqs: ['4.1', '7.2', '7.4'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 4.2 — determinação das partes interessadas e seus requisitos.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre partes interessadas relevantes e suas necessidades e expectativas.',
+    step3FeedbackCorrect: 'Os ~60 prestadores permanentes da Valore convivem diariamente com os aspectos ambientais e os riscos de SST das operações — são partes interessadas relevantes. O requisito 4.2 exige que suas necessidades e expectativas sejam identificadas. O próprio PI-SGA-001 reconhece a lacuna. Como especialista em SGI, você precisa conduzir esse levantamento e integrá-los formalmente ao sistema.',
+    step3FeedbackWrong: 'O PI-SGA-001 registra explicitamente que as expectativas dos contratados "NÃO FORAM LEVANTADAS FORMALMENTE" e não são monitoradas — não conformidade com o requisito 4.2.',
+  },
+  {
+    number: 7,
+    title: 'Política Ambiental — POL-SGA-001',
+    correctReq: '5.2',
+    isConforming: false,
+    scenario: 'Ao preparar uma reunião com a Dra. Sandra, você verifica o POL-SGA-001 — a Política Ambiental da Valore. O documento foi aprovado em 15 de março de 2019 e nunca foi revisado. Em 6 anos, a empresa: passou pela pandemia, contratou ~60 prestadores permanentes, identificou novas ameaças externas (fiscalização do IEMA, exigências ESG dos clientes automotivos) e iniciou o processo de implantação da ISO 45001. A política vigente não inclui nenhum compromisso relacionado a SST.',
+    step1DistractorReqs: ['5.1', '9.3', '6.2'],
+    step1FeedbackCorrect: 'Correto. Uma política não revisada em 6 anos, sem compromissos de SST em uma empresa implementando a ISO 45001, viola o requisito 5.2.',
+    step1FeedbackWrong: 'O cenário apresenta uma política que não reflete mais a realidade da empresa. Qual requisito determina que a política seja revisada periodicamente para continuar pertinente?',
+    step2DistractorReqs: ['5.1', '9.3', '6.2'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 5.2 — sobre como a política do SGI deve ser mantida e revisada.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre a política: documentada, comunicada, disponível e revisada periodicamente.',
+    step3FeedbackCorrect: 'A Política é a declaração de comprometimento da organização com seu SGI — precisa refletir a realidade atual. Em 6 anos sem revisão, o contexto da Valore mudou significativamente. Além disso, uma empresa implementando a ISO 45001 não pode ter uma política sem compromissos de SST. Como especialista em SGI, atualizar a política é uma das primeiras ações a propor à diretoria.',
+    step3FeedbackWrong: 'Uma política não revisada em 6 anos, sem contemplar SST em uma empresa implementando a ISO 45001, não é "pertinente e apropriada". Isso configura não conformidade com o requisito 5.2.',
+  },
+  {
+    number: 8,
+    title: 'Visita à Área de Produção — Conversa com Marcelo Lima',
+    correctReq: '5.1',
+    isConforming: false,
+    scenario: 'O CTX-SGA-001 registra como fraqueza interna: "Resistência da área de produção (Marcelo Lima) à incorporação de requisitos do SGI na rotina" e "Sistema de gestão não integrado (MA e SST operando em silos separados)". Em conversa com Marcelo, Engenheiro de Produção, ele é direto: "Segurança e meio ambiente é coisa do pessoal da Ana Luiza e do Rodrigo. Minha equipe tem que focar em produção." O Manual do SGI define que os gestores de área têm responsabilidade e autoridade formais para implementar os controles operacionais nas suas áreas.',
+    step1DistractorReqs: ['5.3', '7.2', '7.4'],
+    step1FeedbackCorrect: 'Correto. Quando a Alta Direção não garante que o SGI alcance seus resultados em todas as áreas, isso é falha de liderança — requisito 5.1.',
+    step1FeedbackWrong: 'O problema aqui não é só quem é responsável — é que a liderança não está garantindo que o SGI permeie todas as áreas. Qual requisito trata do comprometimento da Alta Direção com o sistema de gestão?',
+    step2DistractorReqs: ['5.3', '7.2', '7.4'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 5.1 — liderança e comprometimento da Alta Direção com o SGI.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre a responsabilidade da Alta Direção em garantir que o SGI alcance seus resultados.',
+    step3FeedbackCorrect: 'A norma exige que a Alta Direção demonstre liderança garantindo que o SGI alcance seus resultados — inclusive assegurando que os gestores de área incorporem os requisitos do sistema. Quando a produção opera em silo, os controles operacionais ficam vulneráveis. Como especialista em SGI, você precisa levar esse problema à Dra. Sandra: não é uma questão técnica, é uma questão de governança que começa no topo.',
+    step3FeedbackWrong: 'Um sistema operando em silos, com resistência formal da área de maior impacto da empresa, indica falha de liderança no comprometimento com o SGI — não conformidade com o requisito 5.1.',
+  },
+  {
+    number: 9,
+    title: 'Revisão da Ata de Análise Crítica — Dezembro 2023',
+    correctReq: '9.3',
+    isConforming: false,
+    scenario: 'Você analisa a ata ACD-SGA-001-2023, da Análise Crítica de dezembro de 2023. A reunião de 1h30 foi presidida pela Dra. Sandra, com Ana Luiza e Rodrigo presentes. Camila Ramos (RH) não foi convocada e Marcelo Lima (Produção) não compareceu. Ao verificar as entradas obrigatórias da norma, você encontra: "Adequação dos recursos" — registrado como "Recursos não discutidos formalmente". "Eficácia das ações para tratar riscos e oportunidades" — "Sem análise de R&O". O Objetivo 03, sem indicador definido, também não foi discutido.',
+    step1DistractorReqs: ['5.1', '9.2', '6.2'],
+    step1FeedbackCorrect: 'Correto. A Análise Crítica com entradas obrigatórias ausentes é uma não conformidade com o requisito 9.3.',
+    step1FeedbackWrong: 'O cenário descreve a reunião de Análise Crítica com entradas incompletas. Qual requisito define o que essa análise deve incluir obrigatoriamente?',
+    step2DistractorReqs: ['5.1', '9.2', '6.2'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 9.3 — entradas obrigatórias da Análise Crítica pela Direção.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre a Análise Crítica pela Administração e suas entradas obrigatórias.',
+    step3FeedbackCorrect: 'A Análise Crítica foi conduzida, mas com entradas incompletas — comprometendo a qualidade das decisões da alta direção. Recursos, riscos e oportunidades são entradas obrigatórias pela norma. Sem elas, a reunião vira uma apresentação de indicadores, não uma análise crítica do sistema. Como especialista em SGI, prepare a pauta da próxima reunião com todas as entradas do requisito 9.3 — e convoque RH e Produção.',
+    step3FeedbackWrong: 'A ata registra que recursos "não foram discutidos formalmente" e que riscos e oportunidades não foram analisados — entradas obrigatórias do requisito 9.3. Não conformidade confirmada.',
+  },
+  {
+    number: 10,
+    title: 'Treinamento de Segregação — TR-SGA-2025-018',
+    correctReq: '7.2',
+    isConforming: false,
+    scenario: 'Após a NC 003/2025 — descarte incorreto de embalagem de eletrodo de solda (resíduo Classe I) no coletor Classe II — Ana Luiza realizou treinamento de segregação de resíduos em 24/10/2025. O TR-SGA-2025-018 documenta: título, data, carga horária de 2h, facilitadora, conteúdo abordado e lista de presença com 10 colaboradores assinada. Porém, o campo "Avaliação de Eficácia" está em branco e o campo "Resultado" registra: "NÃO APLICÁVEL".',
+    step1DistractorReqs: ['7.4', '10.2', '5.1'],
+    step1FeedbackCorrect: 'Correto. Treinamento sem avaliação de eficácia é uma lacuna no requisito 7.2 — competência.',
+    step1FeedbackWrong: 'O cenário mostra um treinamento realizado, mas sem avaliação de eficácia. Qual requisito exige que a competência seja garantida e que as ações de treinamento tenham eficácia avaliada?',
+    step2DistractorReqs: ['7.4', '10.2', '5.1'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 7.2 — competência, avaliação de eficácia e evidências documentadas.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre competência das pessoas: determinação, garantia e avaliação da eficácia das ações tomadas.',
+    step3FeedbackCorrect: 'Realizar o treinamento é necessário — mas não suficiente. O requisito 7.2 exige que a eficácia das ações para garantir competência seja avaliada. Sem essa avaliação, não há evidência de que o treinamento resultou em aprendizado. "NÃO APLICÁVEL" para uma avaliação de eficácia de treinamento é uma resposta que sempre merece questionamento. Como especialista em SGI, estabeleça um método de avaliação — mesmo simples — para todos os treinamentos do sistema.',
+    step3FeedbackWrong: '"Avaliação de Eficácia" em branco e "NÃO APLICÁVEL" demonstram que a avaliação não foi realizada — o requisito 7.2 a exige expressamente. Não conformidade com o requisito.',
+  },
+  {
+    number: 11,
+    title: 'Conformidade Legal — OBJ-SGA-001 e MRL-SGA-001',
+    correctReq: '6.1.3',
+    isConforming: false,
+    scenario: 'Ao revisar o OBJ-SGA-001, você encontra o Objetivo 03: "Manutenção da conformidade legal ambiental". Indicador: [A DEFINIR]. Linha de base: [A DEFINIR]. Resultado do último monitoramento: [Não monitorado — sem indicador definido]. O CTX-SGA-001 registra como fraqueza: "Avaliação de atendimento às obrigações de conformidade nunca documentada". A Matriz de Requisitos Legais (MRL-SGA-001) existe e está atualizada — mas não há qualquer registro de que a Valore avaliou se está efetivamente atendendo a cada obrigação.',
+    step1DistractorReqs: ['6.2', '9.3', '9.2'],
+    step1FeedbackCorrect: 'Correto. Ter a matriz de requisitos não é suficiente — a norma exige avaliação periódica do atendimento, o que é o requisito 6.1.3.',
+    step1FeedbackWrong: 'Ter a matriz de requisitos legais não basta — a norma exige avaliar periodicamente se a organização está cumprindo cada obrigação. Qual requisito aborda isso?',
+    step2DistractorReqs: ['6.2', '9.3', '9.2'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 6.1.3 — obrigações de conformidade e avaliação periódica de seu atendimento.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre requisitos legais: documentar, manter atualizados e avaliar periodicamente o atendimento.',
+    step3FeedbackCorrect: 'Ter a MRL-SGA-001 é o primeiro passo — mas o requisito 6.1.3 exige que a organização avalie periodicamente se está efetivamente cumprindo cada obrigação e mantenha evidência disso. Para uma empresa que opera caldeira, ETE e processos com produtos químicos perigosos, essa lacuna representa risco significativo. Como especialista em SGI, implementar essa avaliação de conformidade é ação prioritária.',
+    step3FeedbackWrong: 'A MRL existe, mas a avaliação do atendimento jamais foi documentada — o que o requisito 6.1.3 exige expressamente. A própria empresa reconhece isso como fraqueza no CTX-SGA-001.',
+  },
+  {
+    number: 12,
+    title: 'Programa de Auditoria Interna — PAI-SGA-001',
+    correctReq: '9.2',
+    isConforming: false,
+    scenario: 'Você analisa o PAI-SGA-001 e o RAI-SGA-2025-009 de novembro de 2025. No relatório, o campo "Auditora" e o campo "Responsável pelo SGA auditado" registram igualmente: "Ana Luiza Ferreira". O próprio PAI-SGA-001 observa: "Responsável pelo SGA que audita". Além disso, no calendário de auditorias 2025, dois processos críticos — Tratamento de Superfície e Montagem e Inspeção — constam como "NÃO REALIZADA".',
+    step1DistractorReqs: ['10.2', '9.3', '7.2'],
+    step1FeedbackCorrect: 'Correto. Ausência de imparcialidade e cobertura incompleta do programa são não conformidades com o requisito 9.2.',
+    step1FeedbackWrong: 'O cenário mostra uma auditora que é também responsável pelo sistema auditado, e duas áreas não auditadas no ciclo anual. Qual requisito trata da auditoria interna?',
+    step2DistractorReqs: ['10.2', '9.3', '7.2'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 9.2 — auditoria interna, imparcialidade e intervalos planejados.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre auditoria interna — intervalos planejados e a exigência de que os auditores não auditem seu próprio trabalho.',
+    step3FeedbackCorrect: 'Dois problemas sérios. Primeiro: Ana Luiza auditando o próprio sistema que gerencia viola o princípio de imparcialidade do requisito 9.2 — "os auditores não devem auditar seu próprio trabalho". Segundo: Tratamento de Superfície e Montagem, com aspectos ambientais significativos, ficaram sem auditoria no ciclo 2025. Como especialista em SGI, você deve propor uma solução de imparcialidade — seja formando outro auditor interno, seja contratando auditor externo.',
+    step3FeedbackWrong: 'A auditora é a mesma pessoa responsável pelo sistema auditado — viola diretamente o requisito de imparcialidade. Além disso, dois processos não foram auditados no ciclo anual previsto. Não conformidade com o requisito 9.2.',
+  },
+
+  // ── BANCO EXPANDIDO: SITUAÇÕES 13–26 ──────────────────────────
+
+  {
+    number: 13,
+    title: 'Reunião com Camila Ramos sobre o Calendário do SGI',
+    correctReq: '9.2',
+    isConforming: false,
+    scenario: 'O PAI-SGA-001 prevê auditorias internas anuais. O último relatório disponível é o RAI-SGA-2025-009, de maio de 2024. Em dezembro de 2025 você pergunta a Ana Luiza quando está agendada a próxima auditoria. Ela diz estar aguardando confirmação da gerência. Ao falar com Camila Ramos (RH), a explicação é direta: "Como estávamos muito focados em faturar e produzir autopeças para os novos contratos, decidimos adiar a auditoria interna por tempo indeterminado."',
+    step1DistractorReqs: ['9.3', '5.1', '6.2'],
+    step1FeedbackCorrect: 'Correto. Auditoria não realizada no intervalo planejado — e adiada indefinidamente por pressão de produção — é não conformidade com o requisito 9.2.',
+    step1FeedbackWrong: 'O cenário descreve a suspensão do programa de auditoria interna. Qual requisito exige que auditorias sejam conduzidas a intervalos planejados?',
+    step2DistractorReqs: ['9.3', '5.1', '6.2'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 9.2 — auditorias a intervalos planejados.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre auditoria interna e a obrigação de realizá-la a intervalos planejados.',
+    step3FeedbackCorrect: 'A norma exige auditorias "a intervalos planejados" — isso não é negociável com base em pressão de produção. Sem auditoria, o sistema perde seu principal mecanismo de autocorreção. O argumento "estávamos focados em produzir" é exatamente o que um Especialista em SGI precisa saber rebater: o SGI existe para ser operado em paralelo com a produção, não como alternativa a ela. Como especialista, você deve apresentar esse ponto à liderança com evidência do risco de certificação.',
+    step3FeedbackWrong: 'Um programa de auditoria suspenso "por tempo indeterminado" não atende ao requisito de auditorias "a intervalos planejados" — não conformidade com 9.2, independentemente da justificativa apresentada.',
+  },
+  {
+    number: 14,
+    title: 'Conversa com Pedro Nascimento — Manutenção Industrial',
+    correctReq: '5.3',
+    isConforming: false,
+    scenario: 'Pedro Nascimento foi contratado há 45 dias como Técnico de Manutenção. Em conversa com ele, você descobre que não sabe que tem responsabilidades formais no SGI: identificar equipamentos com potencial de gerar aspectos ambientais significativos, comunicar anomalias à equipe de MA e participar das avaliações de risco de SST antes de intervenções. O MAN-SGA-001 define essas responsabilidades para técnicos de manutenção, mas Pedro não recebeu nenhuma comunicação formal sobre elas desde a sua contratação.',
+    step1DistractorReqs: ['7.2', '7.3', '5.1'],
+    step1FeedbackCorrect: 'Correto. Responsabilidades definidas no manual mas não comunicadas ao colaborador responsável — lacuna no requisito 5.3.',
+    step1FeedbackWrong: 'O cenário não fala de treinamento ou conscientização, mas de responsabilidades formais do SGI que não foram atribuídas e comunicadas. Qual requisito trata disso?',
+    step2DistractorReqs: ['7.2', '7.3', '5.1'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 5.3 — responsabilidades e autoridades atribuídas, comunicadas e entendidas.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre atribuição, comunicação e compreensão de responsabilidades e autoridades para papéis relevantes ao SGI.',
+    step3FeedbackCorrect: 'O MAN-SGA-001 define responsabilidades, mas definir não é suficiente — o requisito 5.3 exige que sejam atribuídas, comunicadas e entendidas. Pedro está há 45 dias na empresa sem saber qual é seu papel no SGI. Numa área como manutenção, onde intervenções incorretas podem gerar aspectos ambientais graves ou criar perigos de SST, essa lacuna é de risco real. Como especialista em SGI, implante um processo de integração ao SGI para toda nova contratação.',
+    step3FeedbackWrong: 'Responsabilidades existem no manual mas não foram comunicadas ao colaborador — o requisito 5.3 exige exatamente que sejam "atribuídas, comunicadas e entendidas". Isso caracteriza não conformidade.',
+  },
+  {
+    number: 15,
+    title: 'Conscientização do SGI — Operadora da Estamparia',
+    correctReq: '7.3',
+    isConforming: false,
+    scenario: 'Em visita à área de Estamparia, você conversa com Josiane Mendes, operadora há 3 anos na Valore. Ao perguntar sobre o SGI, ela não consegue citar a Política Ambiental, não sabe quais são os Objetivos do SGI para 2025 e, quando questionada sobre como seu trabalho afeta o meio ambiente, responde: "Só estampo peças, não acho que isso afeta nada." Não há registros de treinamento de conscientização do SGI para a área de Estamparia em 2025.',
+    step1DistractorReqs: ['7.2', '7.4', '5.2'],
+    step1FeedbackCorrect: 'Correto. Uma colaboradora de 3 anos que não conhece a política, os objetivos nem a contribuição do seu trabalho para o SGI — lacuna direta no requisito 7.3.',
+    step1FeedbackWrong: 'O cenário não é sobre capacidade técnica (competência) nem sobre comunicar informações. É sobre a colaboradora não estar ciente de seu papel no SGI. Qual requisito trata da conscientização?',
+    step2DistractorReqs: ['7.2', '7.4', '5.2'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 7.3 — conscientização dos colaboradores sobre o SGI.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre garantir que as pessoas estejam conscientes da política, dos objetivos e de sua contribuição para o SGI.',
+    step3FeedbackCorrect: 'Josiane não conhece a política, os objetivos, nem sabe como seu trabalho gera impactos — os três pontos que o requisito 7.3 exige que os colaboradores saibam. A Estamparia é, aliás, uma das fontes de ruído com reclamações formais da comunidade em 2023. Uma operadora não consciente do impacto que gera é um risco tanto ambiental quanto de imagem. Como especialista em SGI, a conscientização precisa ser um processo contínuo, não um treinamento pontual.',
+    step3FeedbackWrong: 'A norma exige que colaboradores conheçam a política, os objetivos e como seu trabalho contribui para o SGI — Josiane não sabe nenhum dos três. Não conformidade com o requisito 7.3.',
+  },
+  {
+    number: 16,
+    title: 'Licença Ambiental de Operação — Controle de Documento',
+    correctReq: '7.5',
+    isConforming: true,
+    scenario: 'Ao auditar as informações documentadas legais da Valore, você verifica a Licença Ambiental de Operação (LAO). Ela está registrada no sistema de controle de documentos com: identificação única (LAO-IEMA-2023-114), validade 2023–2026, acesso restrito à Ana Luiza e à Diretoria Industrial, alerta de renovação programado para 90 dias antes do vencimento, e cópia disponível na área operacional com os parâmetros de emissão vigentes. A versão anterior está arquivada como "obsoleta" com acesso bloqueado para edição.',
+    step1DistractorReqs: ['6.1.3', '4.2', '9.1'],
+    step1FeedbackCorrect: 'Correto. O cenário descreve o controle adequado de uma informação documentada — identificação, acesso, proteção, versão e disponibilidade — que é o requisito 7.5.',
+    step1FeedbackWrong: 'O cenário trata de como a licença está controlada como documento: versão, acesso, arquivamento. Qual requisito trata do controle de informações documentadas?',
+    step2DistractorReqs: ['6.1.3', '4.2', '9.1'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 7.5 — criação, atualização e controle de informações documentadas.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre controle de informações documentadas: identificação, formato, revisão, acesso e disponibilidade.',
+    step3FeedbackCorrect: 'A licença ambiental está corretamente controlada como informação documentada: identificada, com acesso restrito adequado, versão obsoleta arquivada e alerta de renovação programado. Isso atende ao requisito 7.5. Como especialista em SGI, um bom controle de documentos legais evita que versões desatualizadas sejam usadas como referência de limites operacionais.',
+    step3FeedbackWrong: 'A LAO está identificada, com acesso controlado, versão obsoleta arquivada e alerta de renovação programado — todos os critérios de 7.5 estão atendidos. É uma situação conforme.',
+  },
+  {
+    number: 17,
+    title: 'Armazenamento de Solvente no Tratamento de Superfície',
+    correctReq: '8.1',
+    isConforming: false,
+    scenario: 'Na área de Tratamento de Superfície, você encontra 5 tambores de solvente (produto perigoso, precursor de resíduo Classe I) armazenados diretamente sobre o piso, ao lado de um ralo que conecta ao sistema de tratamento de efluentes. Não há contenção secundária (bacia de contenção), nenhuma sinalização indicando o perigo, e o procedimento operacional da área não cobre o armazenamento desses tambores. Ao perguntar ao operador, ele responde: "Eles sempre ficaram aqui." O levantamento de aspectos ambientais da área identifica o vazamento de solvente como aspecto de significância ALTA.',
+    step1DistractorReqs: ['8.2', '6.1.3', '10.2'],
+    step1FeedbackCorrect: 'Correto. Aspecto significativo sem controle operacional adequado — não conformidade direta com o requisito 8.1.',
+    step1FeedbackWrong: 'Um aspecto ambiental de alta significância sendo gerenciado sem controles operacionais implementados. Qual requisito trata do planejamento e controle das operações com impacto no SGI?',
+    step2DistractorReqs: ['8.2', '6.1.3', '10.2'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 8.1 — planejamento e controle operacional para aspectos e riscos significativos.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre implementar controles para os processos que têm aspectos ambientais ou riscos de SST significativos.',
+    step3FeedbackCorrect: 'O levantamento de aspectos classifica o vazamento de solvente como significância ALTA — e não há contenção, sinalização nem procedimento. Isso é ausência total de controle operacional para um aspecto crítico, em desconformidade direta com o requisito 8.1. A expressão "sempre ficou aqui" é um sinal de alerta claro: controles de SGI não se estabelecem por hábito, mas por processo documentado e implementado. Como especialista, esse ponto precisa de ação imediata.',
+    step3FeedbackWrong: 'Aspecto ambiental de significância ALTA sem contenção, sinalização ou procedimento de controle — ausência clara de controle operacional exigido pelo requisito 8.1.',
+  },
+  {
+    number: 18,
+    title: 'Monitoramento do Consumo de Água — Objetivo 01',
+    correctReq: '9.1',
+    isConforming: true,
+    scenario: 'Ao verificar o Objetivo 01 (reduzir consumo de água de 4,2 para 3,5 m³/ton até dezembro/2025), você encontra: leitura do hidrômetro da Usinagem realizada toda segunda-feira pela equipe de MA, resultados registrados na planilha SGA-MON-001, tendência de consumo atualizada no painel de indicadores, e gráfico histórico que mostra evolução de 4,2 (jan/2025) para 3,8 m³/ton (nov/2025). O método de medição está descrito no procedimento e o hidrômetro tem certificado de calibração vigente (set/2025).',
+    step1DistractorReqs: ['6.2', '7.5', '9.3'],
+    step1FeedbackCorrect: 'Correto. O cenário descreve um sistema completo de monitoramento e medição com método, frequência, registro e análise de tendência — requisito 9.1.',
+    step1FeedbackWrong: 'O cenário descreve como o indicador é medido, registrado e acompanhado — não os objetivos em si. Qual requisito trata de monitoramento e medição do desempenho?',
+    step2DistractorReqs: ['6.2', '7.5', '9.3'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 9.1 — monitoramento, medição, análise e avaliação do desempenho.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre determinar o que medir, como medir, quando medir e quando analisar os resultados.',
+    step3FeedbackCorrect: 'O monitoramento do Objetivo 01 está estruturado: método definido, frequência estabelecida, equipamento calibrado, registro mantido e análise de tendência atualizada. Isso atende ao requisito 9.1. Note que monitorar o indicador e ter o objetivo bem estruturado (6.2) são coisas diferentes — aqui estamos avaliando a qualidade do processo de monitoramento em si, que está conforme.',
+    step3FeedbackWrong: 'O monitoramento tem método definido, frequência, equipamento calibrado, registro e análise de tendência — atende plenamente ao requisito 9.1. Situação conforme.',
+  },
+  {
+    number: 19,
+    title: 'Revisão do Registro de Riscos e Oportunidades',
+    correctReq: '6.1',
+    isConforming: false,
+    scenario: 'O CTX-SGA-001 registra como ameaça: "Possível endurecimento das licenças ambientais do IEMA para empresas do setor metalmecânico." No registro de riscos e oportunidades, essa ameaça foi classificada como probabilidade ALTA / impacto ALTO. No entanto, a coluna "Ações planejadas" registra: "Em análise — ação não definida." A análise de contexto foi atualizada em fevereiro de 2024. Estamos em dezembro de 2025 — 22 meses sem que nenhuma ação preventiva ou de mitigação tenha sido planejada para esse risco.',
+    step1DistractorReqs: ['4.1', '6.1.3', '9.3'],
+    step1FeedbackCorrect: 'Correto. Risco identificado, classificado como ALTO — e sem nenhuma ação planejada por 22 meses. Isso é lacuna no requisito 6.1.',
+    step1FeedbackWrong: 'O risco já está identificado no contexto (4.1). O problema aqui é a etapa seguinte: o que a organização faz com os riscos identificados. Qual requisito exige planejar ações para tratar riscos e oportunidades?',
+    step2DistractorReqs: ['4.1', '6.1.3', '9.3'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 6.1 — planejar ações para tratar riscos e oportunidades identificados.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre determinar riscos e oportunidades e planejar ações para abordá-los.',
+    step3FeedbackCorrect: 'Identificar o risco é apenas o primeiro passo — o requisito 6.1 exige que a organização PLANEJE AÇÕES para abordar os riscos e oportunidades determinados. Um risco ALTO/ALTO sem ação por 22 meses é o equivalente a instalar um detector de incêndio e não ter extintor. Como especialista em SGI, a conversão de riscos do contexto em ações concretas é uma das contribuições mais valiosas que você pode trazer à Valore.',
+    step3FeedbackWrong: 'Risco classificado como ALTO/ALTO sem ação planejada por 22 meses — o requisito 6.1 exige que riscos e oportunidades identificados resultem em ações planejadas. Não conformidade.',
+  },
+  {
+    number: 20,
+    title: 'Conversa com Rodrigo Martins sobre a Rotina de SST',
+    correctReq: '7.1',
+    isConforming: false,
+    scenario: 'O CTX-SGA-001 registra como fraqueza: "Técnico de SST (Rodrigo) sobrecarregado — risco de lacunas no monitoramento de SST." Verificando na prática: o monitoramento de ruído ocupacional da Estamparia (exigido anualmente pela NR-15) está 14 meses em atraso. Rodrigo explica que está gerenciando SST para 487 colaboradores e 60 prestadores, toda a documentação da implantação da ISO 45001, os DDS diários e as investigações de incidentes — sozinho, sem orçamento aprovado para contratação de apoio.',
+    step1DistractorReqs: ['5.1', '5.3', '7.2'],
+    step1FeedbackCorrect: 'Correto. Quando os recursos humanos são insuficientes para implementar e manter o SGI, isso viola o requisito 7.1.',
+    step1FeedbackWrong: 'A raiz do problema não é liderança ou competência — é a falta de capacidade instalada para operar o sistema. Qual requisito obriga a organização a determinar e prover os recursos necessários para o SGI?',
+    step2DistractorReqs: ['5.1', '5.3', '7.2'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 7.1 — determinação e provisão dos recursos necessários para o SGI.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre determinar e prover os recursos necessários para estabelecer, implementar, manter e melhorar o SGI.',
+    step3FeedbackCorrect: 'A norma é clara: a organização deve determinar E PROVER os recursos necessários. Rodrigo gerenciando SST de 547 pessoas sozinho, com monitoramento legal em atraso, evidencia que os recursos não foram providos adequadamente. Como especialista em SGI, dimensionar corretamente a equipe é uma conversa que você precisa ter com a Dra. Sandra — com dados. O CTX-SGA-001 já reconhece a fraqueza. Agora é hora de colocá-la na pauta da Análise Crítica como item de recursos.',
+    step3FeedbackWrong: 'Monitoramento legal 14 meses em atraso por falta de capacidade da equipe — a organização não proveu recursos suficientes para o SGI, contrariando o requisito 7.1.',
+  },
+  {
+    number: 21,
+    title: 'Nova Atividade de Solda — Montagem e Inspeção',
+    correctReq: '5.4',
+    isConforming: false,
+    scenario: 'A Engenharia de Produção (Marcelo) introduziu uma nova atividade de solda de ponto na Montagem e Inspeção. A avaliação de riscos foi realizada por Rodrigo no escritório, com base na ficha técnica do equipamento. Os 8 soldadores que executarão a atividade não foram consultados em nenhum momento: não foram perguntados sobre os perigos que percebem, não participaram da avaliação de riscos e não tiveram seus conhecimentos práticos sobre a atividade considerados. Ao conversar com eles, mencionam desconforto com o nível de fumaça — dado que não aparece na avaliação técnica.',
+    step1DistractorReqs: ['6.1.2', '8.1.3', '7.2'],
+    step1FeedbackCorrect: 'Correto. Trabalhadores não consultados em avaliação de risco que os afeta diretamente — requisito 5.4 da ISO 45001.',
+    step1FeedbackWrong: 'O problema não é identificar os perigos (que foram avaliados, mesmo que incompletamente) — é que quem executa a atividade não foi envolvido no processo. Qual requisito da ISO 45001 trata da participação dos trabalhadores?',
+    step2DistractorReqs: ['6.1.2', '8.1.3', '7.2'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 5.4 (ISO 45001) — consulta e participação dos trabalhadores.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre estabelecer processos para consulta e participação dos trabalhadores no SGI de SST.',
+    step3FeedbackCorrect: 'A ISO 45001 exige consulta e participação dos trabalhadores — não como cortesia, mas como requisito. Quem executa a atividade conhece os riscos práticos que nenhuma ficha técnica captura. O dado da fumaça mencionado pelos soldadores, ausente na avaliação formal, é exatamente o tipo de informação que a participação deveria capturar. Como especialista em SGI, garanta que processos de identificação de perigos e avaliação de riscos incluam os trabalhadores que realizam as atividades.',
+    step3FeedbackWrong: 'A avaliação de risco foi feita sem consultar quem executa a atividade — o requisito 5.4 da ISO 45001 exige processos de consulta e participação dos trabalhadores. A fumaça percebida pelos soldadores e ausente na avaliação ilustra bem o custo dessa omissão.',
+  },
+  {
+    number: 22,
+    title: 'Mudança de Insumo no Tratamento de Superfície',
+    correctReq: '8.1.3',
+    isConforming: false,
+    scenario: 'Com base na oportunidade identificada no CTX-SGA-001 — "tecnologias mais limpas para substituição de produtos químicos no Tratamento de Superfície" — o Departamento de Compras aprovou e recebeu um novo desengraxante de fornecedor diferente. O produto chegou e já está em uso. Nenhum processo formal de gestão de mudanças foi ativado: sem reavaliação dos aspectos ambientais (o novo produto tem composição distinta), sem atualização dos controles operacionais, sem treinamento da equipe antes do uso e sem verificação do novo FISPQ.',
+    step1DistractorReqs: ['8.1', '6.1', '10.2'],
+    step1FeedbackCorrect: 'Correto. Mudança em produto químico implementada sem o processo de gestão de mudanças — requisito 8.1.3 da ISO 45001.',
+    step1FeedbackWrong: 'Há um controle operacional ausente, mas a raiz é mais específica: foi introduzida uma mudança na operação sem o processo que deveria preceder qualquer mudança. Qual requisito trata da gestão das mudanças planejadas?',
+    step2DistractorReqs: ['8.1', '6.1', '10.2'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 8.1.3 (ISO 45001) — processo para implementação e controle de mudanças planejadas.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala especificamente sobre implementação e controle de mudanças — temporárias ou permanentes — que impactam o SGI.',
+    step3FeedbackCorrect: 'A gestão de mudanças existe exatamente para essa situação: qualquer alteração em produto, processo ou equipamento precisa passar por uma análise antes da implementação. Trocar um produto químico sem reavaliar aspectos ambientais e riscos de SST é abrir uma janela de vulnerabilidade. A ironia aqui é que a mudança surgiu de uma OPORTUNIDADE de melhoria — e acabou gerando uma não conformidade por falta de processo. Como especialista em SGI, estabeleça o fluxo de gestão de mudanças como rotina, não como exceção.',
+    step3FeedbackWrong: 'Mudança em produto químico implementada sem análise prévia de aspectos, riscos, controles operacionais e treinamento — ausência do processo de gestão de mudanças exigido pelo requisito 8.1.3.',
+  },
+  {
+    number: 23,
+    title: 'Investigação de Ocorrência na Usinagem',
+    correctReq: '10.2',
+    isConforming: true,
+    scenario: 'O operador Marcos Pereira registra um quase-acidente: uma ferramenta de corte se soltou do torno CNC e ficou alojada na proteção, a 30 cm de onde ele estava. Rodrigo abre o registro, investiga com Marcos e o supervisor, identifica a causa raiz (porta-ferramenta gasto não detectado na manutenção preventiva), define ação corretiva (incluir inspeção do porta-ferramenta no checklist de PM), registra responsável (Manutenção) com prazo de 7 dias. Quinze dias depois verifica que a ação foi implementada e eficaz — o checklist revisado foi validado e está em uso. O registro é encerrado com avaliação de eficácia documentada.',
+    step1DistractorReqs: ['9.2', '8.2', '5.4'],
+    step1FeedbackCorrect: 'Correto. Incidente tratado com investigação, causa raiz, ação corretiva, prazo, responsável e verificação de eficácia — ciclo completo do requisito 10.2.',
+    step1FeedbackWrong: 'O cenário não descreve uma auditoria nem uma resposta de emergência. É o tratamento completo de um incidente de SST. Qual requisito define como incidentes e NCs devem ser tratados?',
+    step2DistractorReqs: ['9.2', '8.2', '5.4'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 10.2 — tratamento de incidentes, NCs e ações corretivas com evidência de eficácia.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre ações corretivas proporcional à significância, com evidências documentadas incluindo a avaliação de eficácia.',
+    step3FeedbackCorrect: 'O quase-acidente foi tratado exemplarmente: registro, investigação, causa raiz identificada, ação corretiva com responsável e prazo, verificação de eficácia e encerramento documentado. Esse é o ciclo completo que o requisito 10.2 exige — e que raramente aparece completo na prática. Compare com o PGR-SST-001 da Valore, que registra zero quase-acidentes para 487 colaboradores: ou a Valore é extraordinariamente segura, ou a subnotificação é o problema real.',
+    step3FeedbackWrong: 'O ciclo está completo: investigação, causa raiz, ação corretiva, verificação de eficácia e encerramento documentado. Isso está em plena conformidade com o requisito 10.2.',
+  },
+  {
+    number: 24,
+    title: 'Protocolo ESG do Cliente Automotivo',
+    correctReq: '4.2',
+    isConforming: true,
+    scenario: 'A principal montadora cliente da Valore enviou um protocolo ESG formal para sua cadeia de fornecimento. Ana Luiza e o Diretor Comercial analisaram o documento e identificaram: 5 novos requisitos de desempenho ambiental (relato de emissões de CO₂, intensidade hídrica, taxa de resíduos perigosos gerados, descarte zero para aterro e rastreabilidade de insumos críticos) e 2 requisitos de SST (taxa de quase-acidentes e taxa de acidentes com afastamento). Todos foram incluídos no PI-SGA-001 como requisitos do cliente, classificados como obrigações de conformidade, e vinculados aos objetivos e indicadores pertinentes do SGI.',
+    step1DistractorReqs: ['6.1.3', '6.2', '4.1'],
+    step1FeedbackCorrect: 'Correto. Necessidades e expectativas de uma parte interessada relevante (cliente automotivo) identificadas e incorporadas ao SGI — requisito 4.2.',
+    step1FeedbackWrong: 'O cenário trata das exigências de um cliente sendo formalmente mapeadas e integradas ao SGI. Qual requisito determina que a organização identifique as necessidades e expectativas das partes interessadas relevantes?',
+    step2DistractorReqs: ['6.1.3', '6.2', '4.1'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 4.2 — partes interessadas, suas necessidades e obrigações de conformidade.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre determinar partes interessadas relevantes e as necessidades que podem se tornar obrigações de conformidade.',
+    step3FeedbackCorrect: 'A Valore identificou os requisitos ESG do cliente, os classificou como obrigações de conformidade e os vinculou ao SGI. Isso atende ao requisito 4.2. Vale notar: exigências ESG de clientes automotivos são exatamente o tipo de requisito que o CTX-SGA-001 identifica como ameaça crescente — e aqui a Valore mostra como transformá-las em processo gerenciado.',
+    step3FeedbackWrong: 'Os requisitos ESG do cliente foram identificados, classificados como obrigações de conformidade e integrados ao PI-SGA-001 — atende plenamente ao requisito 4.2. Situação conforme.',
+  },
+  {
+    number: 25,
+    title: 'Revisão da Tabela PESTEL — Fatores Ambientais',
+    correctReq: 'amd1',
+    isConforming: false,
+    scenario: 'Revisando a tabela PESTEL do CTX-SGA-001 (Rev. 01, fev/2024), você encontra na categoria Ambiental a seguinte entrada: "Mudanças climáticas e impactos sobre biodiversidade local [ NÃO AVALIADO — requisito da ISO 14001:2026 ]". No mesmo documento, está registrado como ameaça: "Regime de chuvas irregular afetando o abastecimento de água industrial — impacto no processo de usinagem e ETE." Você constata que: (a) a ISO 14001:2026 não existe — o requisito de avaliação de mudanças climáticas consta do Adendo 1:2024 da ISO 14001:2015, já publicado; (b) a irregularidade hídrica registrada como ameaça é um impacto climático direto que o documento não conecta ao tema.',
+    step1DistractorReqs: ['4.1', '6.1', '9.3'],
+    step1FeedbackCorrect: 'Correto. O Adendo 1:2024 da ISO 14001:2015 estende o requisito 4.1 para incluir a determinação de relevância das mudanças climáticas — e a Valore não realizou essa avaliação.',
+    step1FeedbackWrong: 'O cenário envolve algo não avaliado na análise de contexto. Mas há uma especificidade: mudanças climáticas foram incluídas no escopo do requisito 4.1 por um adendo normativo de 2024. Qual é o requisito correto?',
+    step2DistractorReqs: ['4.1', '6.1', '9.3'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do Adendo 1:2024 da ISO 14001:2015 — a organização deve determinar se mudanças climáticas são pertinentes ao seu contexto.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala especificamente sobre mudanças climáticas como questão a ser determinada na análise de contexto.',
+    step3FeedbackCorrect: 'Dois problemas no CTX-SGA-001. Primeiro: a referência à "ISO 14001:2026" é incorreta — o adendo que torna obrigatória a avaliação de mudanças climáticas é o Amd 1:2024, já publicado e aplicável. Segundo: a irregularidade hídrica registrada como ameaça é um impacto de mudança climática que o documento não conecta ao tema — o problema existe, mas não está enquadrado como tal. Como especialista em SGI, você precisa: corrigir a referência normativa, conduzir a avaliação de relevância das mudanças climáticas e conectar os impactos já identificados à análise exigida pelo adendo.',
+    step3FeedbackWrong: 'A entrada está marcada como "NÃO AVALIADO", a referência normativa está errada ("ISO 14001:2026" não existe) e um impacto climático já registrado não está conectado à avaliação. São três evidências de não conformidade com o Adendo 1:2024 da ISO 14001:2015.',
+  },
+  {
+    number: 26,
+    title: 'Novo Equipamento na Área de Usinagem',
+    correctReq: '6.1.2',
+    isConforming: false,
+    scenario: 'Um novo centro de usinagem CNC de 5 eixos foi adquirido e instalado na Usinagem em setembro de 2025. Marcelo autorizou a instalação diretamente com o fornecedor. Rodrigo ficou sabendo quando passou pela área. O processo de identificação de perigos de SST não foi iniciado para o novo equipamento: sem mapeamento de pontos de amputação, sem medição do nível de ruído gerado, sem análise de projeção de cavacos e sem avaliação ergonômica para os operadores. Três meses após a instalação, dois quase-acidentes envolvendo o equipamento já foram registrados.',
+    step1DistractorReqs: ['8.1.3', '8.1', '5.1'],
+    step1FeedbackCorrect: 'Correto. Novo equipamento em operação sem identificação prévia de perigos — requisito 6.1.2 da ISO 45001.',
+    step1FeedbackWrong: 'O cenário envolve um novo equipamento, mas o problema principal não é a gestão da mudança em si — é que os perigos do equipamento nunca foram identificados. Qual requisito da ISO 45001 trata da identificação contínua e proativa de perigos?',
+    step2DistractorReqs: ['8.1.3', '8.1', '5.1'],
+    step2FeedbackCorrect: 'Correto! Esse é o trecho do requisito 6.1.2 (ISO 45001) — identificação contínua e proativa de perigos.',
+    step2FeedbackWrong: 'Esse trecho pertence a outro requisito. Procure o que fala sobre identificação contínua e proativa de perigos, incluindo mudanças em equipamentos.',
+    step3FeedbackCorrect: 'O requisito 6.1.2 da ISO 45001 exige identificação CONTÍNUA e PROATIVA de perigos — o que inclui novos equipamentos, antes de entrarem em operação. Dois quase-acidentes em três meses são o custo de não ter feito essa identificação. Note que essa situação também conecta o requisito 8.1.3 (gestão de mudanças): o processo correto seria Marcelo acionar a gestão de mudanças → Rodrigo identificar os perigos → definir controles → treinar operadores → só então operar. Como especialista em SGI, o fluxo de novos equipamentos precisa passar pelo seu processo.',
+    step3FeedbackWrong: 'Equipamento em operação por 3 meses sem que os perigos tenham sido identificados — dois quase-acidentes depois. O requisito 6.1.2 exige identificação proativa de perigos, inclusive para mudanças em equipamentos. Não conformidade.',
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+
+let state = {
+  screen: 'intro',
+  situationIdx: 0,
+  situationOrder: [],
+  currentStep: 1,
+  stepsDone: [false, false, false],
+  stepCorrect: [null, null, null],
+  score: 0,
+  results: [],
+  shuffledStep1: [],
+  shuffledStep2: [],
+};
+
+// ═══════════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════════
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildStep1Options(sit) {
+  const opts = [
+    { req: sit.correctReq, correct: true },
+    ...sit.step1DistractorReqs.map(r => ({ req: r, correct: false }))
+  ];
+  return shuffle(opts);
+}
+
+function buildStep2Options(sit) {
+  const opts = [
+    { req: sit.correctReq, correct: true },
+    ...sit.step2DistractorReqs.map(r => ({ req: r, correct: false }))
+  ];
+  return shuffle(opts);
+}
+
+function currentSit() {
+  return situations[state.situationOrder[state.situationIdx]];
+}
+
+function initSituation(playIdx) {
+  const sit = situations[state.situationOrder[playIdx]];
+  state.currentStep = 1;
+  state.stepsDone = [false, false, false];
+  state.stepCorrect = [null, null, null];
+  state.shuffledStep1 = buildStep1Options(sit);
+  state.shuffledStep2 = buildStep2Options(sit);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER ENGINE
+// ═══════════════════════════════════════════════════════════════
+
+const app = document.getElementById('app');
+
+function render() {
+  switch (state.screen) {
+    case 'intro':     renderIntro(); break;
+    case 'briefing':  renderBriefing(); break;
+    case 'situation': renderSituation(); break;
+    case 'results':   renderResults(); break;
+  }
+}
+
+// ─── INTRO ───────────────────────────────────────────────────
+function renderIntro() {
+  app.innerHTML = `
+    <div class="app-header">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <div class="brand-name">Valore Metalmecânica S.A. · SGI</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="intro-hero">
+        <div class="company-badge">Simulador de SGI · Eccellenza Formação</div>
+        <div class="intro-title">Entender<br>para <span>Atender</span></div>
+        <div class="intro-subtitle">
+          ISO 14001 &amp; ISO 45001 na rotina da Valore Metalmecânica.<br>
+          Você reconhece a norma quando ela aparece?
+        </div>
+        <div class="intro-meta">
+          <div class="intro-meta-item"><strong>26</strong>Situações no banco</div>
+          <div class="intro-meta-item"><strong>12</strong>Por sessão · sorteadas</div>
+          <div class="intro-meta-item"><strong>36</strong>Pontos possíveis</div>
+        </div>
+        <button class="btn-primary" onclick="goToBriefing()">Iniciar o simulador →</button>
+      </div>
+      <div class="intro-info-grid">
+        <div class="info-card">
+          <div class="info-icon">🔍</div>
+          <div class="info-title">Passo 1 — Requisito</div>
+          <p>Identifique qual requisito da norma está em jogo na situação.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">📄</div>
+          <div class="info-title">Passo 2 — Texto da norma</div>
+          <p>Selecione o trecho normativo que fundamenta o requisito identificado.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">⚖️</div>
+          <div class="info-title">Passo 3 — Conformidade</div>
+          <p>Avalie se a Valore está conforme ou não conforme com a norma nessa situação.</p>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ─── BRIEFING ────────────────────────────────────────────────
+function renderBriefing() {
+  app.innerHTML = `
+    <div class="app-header">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <div class="brand-name">Entender para Atender · Valore SGI</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="card">
+        <div class="briefing-header">
+          <div class="briefing-icon">🏭</div>
+          <div>
+            <div class="briefing-tag">Seu contexto</div>
+            <div class="briefing-title">A Valore Metalmecânica S.A.</div>
+          </div>
+        </div>
+        <p class="briefing-text">
+          A Valore Metalmecânica S.A. é uma empresa do setor metalmecânico localizada em Valore do Sul - ES,
+          com 487 colaboradores diretos e ~60 prestadores de serviço permanentes. Fabrica componentes 
+          industriais e autopeças para montadoras. Possui certificação ISO 14001 desde 2016 e está iniciando
+          a implantação da ISO 45001.
+        </p>
+        <div class="briefing-role">
+          <div class="role-label">Sua posição</div>
+          <p>"Você é o Especialista em SGI da Valore. Nos seus primeiros dias, você percorre documentos, 
+          conversa com as equipes e observa a rotina da empresa. Em cada situação, você precisa 
+          identificar qual requisito da norma está em jogo e o que ela determina — porque é exatamente 
+          isso que vai orientar seu trabalho aqui."</p>
+        </div>
+        <div class="briefing-header" style="margin-bottom:12px;">
+          <div class="briefing-icon">🎯</div>
+          <div>
+            <div class="briefing-tag">Como funciona</div>
+            <div class="briefing-title">3 Passos por Situação</div>
+          </div>
+        </div>
+        <ul class="mechanics-list" style="margin-bottom:24px;">
+          <li>
+            <div class="step-num">1</div>
+            <span><strong>Requisito da norma</strong> — Escolha entre 4 opções qual requisito está presente na situação descrita.</span>
+          </li>
+          <li>
+            <div class="step-num">2</div>
+            <span><strong>Texto da norma</strong> — Selecione o trecho normativo que corresponde ao requisito identificado.</span>
+          </li>
+          <li>
+            <div class="step-num">3</div>
+            <span><strong>Conformidade</strong> — Avalie se a Valore está <em>conforme</em> ou <em>não conforme</em> com a norma nessa situação.</span>
+          </li>
+        </ul>
+        <button class="btn-primary" style="width:100%;" onclick="startSimulation()">Começar as 12 situações →</button>
+      </div>
+    </div>`;
+}
+
+// ─── SITUATION ───────────────────────────────────────────────
+function renderSituation() {
+  const sit = currentSit();
+  const progress = state.situationIdx / situations.length * 100;
+  const totalScore = state.score;
+
+  const conformTag = sit.isConforming
+    ? `<span class="conformity-tag tag-hidden" id="conform-tag">✅ Situação Conforme</span>`
+    : `<span class="conformity-tag tag-hidden" id="conform-tag">❌ Situação Não Conforme</span>`;
+
+  const stepDotsHTML = [0,1,2].map(i => {
+    let cls = '';
+    if (state.stepsDone[i]) cls = 'done';
+    else if (i === state.currentStep - 1) cls = 'active';
+    return `<div class="step-dot ${cls}"></div>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="app-header">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <div class="brand-name">Entender para Atender · Valore SGI</div>
+      </div>
+      <div class="score-pill">⭐ ${totalScore} / 36 pts</div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-label">Situação ${state.situationIdx + 1} de ${situations.length}</div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width:${progress}%"></div>
+      </div>
+      <div class="step-dots">${stepDotsHTML}</div>
+    </div>
+    <div class="container">
+
+      <!-- SCENARIO CARD -->
+      <div class="card">
+        <div class="situation-header">
+          <div class="situation-num">Situação ${state.situationIdx + 1} · ISO 14001 / 45001</div>
+          ${conformTag}
+        </div>
+        <div class="scenario-title">${sit.title}</div>
+        <div class="scenario-text">${sit.scenario}</div>
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="step-card" id="step1-card">
+        <div class="step-label">
+          <div class="step-badge ${state.stepsDone[0] ? 'done' : ''}" id="s1badge">${state.stepsDone[0] ? '✓' : '1'}</div>
+          <div class="step-question">Qual requisito da norma está presente nesta situação?</div>
+        </div>
+        <div class="options-grid" id="step1-options">
+          ${state.shuffledStep1.map((opt, i) =>
+            `<button class="option-btn" id="s1opt${i}" onclick="handleStep1(${i})"
+              ${state.stepsDone[0] ? 'disabled' : ''}>
+              <span class="opt-letter">${'ABCD'[i]}</span>
+              <span class="opt-text"><strong>Cláusula ${opt.req}</strong> — ${reqNames[opt.req]}</span>
+            </button>`
+          ).join('')}
+        </div>
+        <div class="feedback-box ${state.stepsDone[0] ? 'show ' + (state.stepCorrect[0] ? 'fb-correct' : 'fb-wrong') : ''}" id="fb1">
+          ${state.stepsDone[0] ? renderStep1Feedback(sit) : ''}
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-card" id="step2-card" style="${state.stepsDone[0] ? '' : 'opacity:0.4;pointer-events:none;'}">
+        <div class="step-label">
+          <div class="step-badge ${state.stepsDone[1] ? 'done' : ''}" id="s2badge">${state.stepsDone[1] ? '✓' : '2'}</div>
+          <div class="step-question">O que a norma determina sobre este requisito?</div>
+        </div>
+        <div class="options-grid" id="step2-options">
+          ${state.shuffledStep2.map((opt, i) =>
+            `<button class="option-btn" id="s2opt${i}" onclick="handleStep2(${i})"
+              ${state.stepsDone[1] ? 'disabled' : ''}>
+              <span class="opt-letter">${'ABCD'[i]}</span>
+              <span class="opt-text">${normTexts[opt.req]}</span>
+            </button>`
+          ).join('')}
+        </div>
+        <div class="feedback-box ${state.stepsDone[1] ? 'show ' + (state.stepCorrect[1] ? 'fb-correct' : 'fb-wrong') : ''}" id="fb2">
+          ${state.stepsDone[1] ? renderStep2Feedback(sit) : ''}
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-card" id="step3-card" style="${state.stepsDone[1] ? '' : 'opacity:0.4;pointer-events:none;'}">
+        <div class="step-label">
+          <div class="step-badge ${state.stepsDone[2] ? 'done' : ''}" id="s3badge">${state.stepsDone[2] ? '✓' : '3'}</div>
+          <div class="step-question">Com base no cenário, a Valore está:</div>
+        </div>
+        <div class="conform-btns">
+          <button class="conform-btn btn-conforme ${state.stepsDone[2] && sit.isConforming ? 'selected-conforme' : state.stepsDone[2] && !sit.isConforming ? '' : ''}" 
+            id="btn-conf" onclick="handleStep3(true)" ${state.stepsDone[2] ? 'disabled' : ''}>
+            <span class="conf-icon">✅</span>
+            Conforme com a norma
+          </button>
+          <button class="conform-btn btn-nc ${state.stepsDone[2] && !sit.isConforming ? 'selected-nc' : state.stepsDone[2] && sit.isConforming ? '' : ''}" 
+            id="btn-nc" onclick="handleStep3(false)" ${state.stepsDone[2] ? 'disabled' : ''}>
+            <span class="conf-icon">❌</span>
+            Não conforme com a norma
+          </button>
+        </div>
+        <div class="main-feedback ${state.stepsDone[2] ? 'show' : ''}" id="mf">
+          ${state.stepsDone[2] ? renderMainFeedback(sit) : ''}
+        </div>
+      </div>
+
+      <!-- NAV BUTTON -->
+      <button class="nav-btn ${state.stepsDone[2] ? 'show' : ''}" id="nav-btn" onclick="nextSituation()">
+        ${state.situationIdx < situations.length - 1 ? 'Próxima situação →' : 'Ver resultado final →'}
+      </button>
+
+    </div>`;
+}
+
+function renderStep1Feedback(sit) {
+  const correct = state.stepCorrect[0];
+  if (correct) {
+    return `<div class="fb-title">✓ Correto!</div>${sit.step1FeedbackCorrect}`;
+  } else {
+    const correctIdx = state.shuffledStep1.findIndex(o => o.correct);
+    return `
+      <div class="fb-title">✗ Não é esse.</div>
+      ${sit.step1FeedbackWrong}
+      <div class="fb-correct-reveal">
+        <strong>Requisito correto:</strong> Cláusula ${sit.correctReq} — ${reqNames[sit.correctReq]}
+      </div>`;
+  }
+}
+
+function renderStep2Feedback(sit) {
+  const correct = state.stepCorrect[1];
+  if (correct) {
+    return `<div class="fb-title">✓ Correto!</div>${sit.step2FeedbackCorrect}`;
+  } else {
+    return `
+      <div class="fb-title">✗ Não é esse trecho.</div>
+      ${sit.step2FeedbackWrong}
+      <div class="fb-correct-reveal">
+        <strong>Trecho correto (Cláusula ${sit.correctReq}):</strong><br>${normTexts[sit.correctReq]}
+      </div>`;
+  }
+}
+
+function renderMainFeedback(sit) {
+  const correct = state.stepCorrect[2];
+  const icon = sit.isConforming ? '✅' : '🔴';
+  const statusLabel = sit.isConforming ? 'Situação CONFORME' : 'Situação NÃO CONFORME';
+  const feedbackText = correct ? sit.step3FeedbackCorrect : sit.step3FeedbackWrong;
+  return `
+    <div class="mf-header">
+      <span class="mf-icon">${icon}</span>
+      <div>
+        <div class="mf-req">Cláusula ${sit.correctReq} — ${reqNames[sit.correctReq]}</div>
+        <div class="mf-status">${correct ? '✓ Acertou!' : '✗ Resposta incorreta'} · ${statusLabel}</div>
+      </div>
+    </div>
+    <div class="mf-text">${feedbackText}</div>`;
+}
+
+// ─── RESULTS ────────────────────────────────────────────────
+function renderResults() {
+  const total = state.score;
+  let badge, classification, color;
+  if (total >= 32) { badge = '🥇'; classification = 'Especialista SGI'; }
+  else if (total >= 24) { badge = '🥈'; classification = 'Gestor Competente'; }
+  else if (total >= 16) { badge = '🥉'; classification = 'Profissional em Formação'; }
+  else { badge = '📚'; classification = 'Aprendiz Iniciante'; }
+
+  const s1Total = state.results.reduce((a,r) => a + (r.s1 ? 1 : 0), 0);
+  const s2Total = state.results.reduce((a,r) => a + (r.s2 ? 1 : 0), 0);
+  const s3Total = state.results.reduce((a,r) => a + (r.s3 ? 1 : 0), 0);
+
+  const rows = state.results.map((r, i) => {
+    const sit = situations[state.situationOrder[i]];
+    return `
+      <tr>
+        <td>
+          <strong>${i+1}. ${sit.title.length > 30 ? sit.title.substring(0,30)+'…' : sit.title}</strong>
+          <span class="req-small">Cláusula ${sit.correctReq} · ${sit.isConforming ? '✅ Conforme' : '❌ NC'}</span>
+        </td>
+        <td class="${r.s1 ? 'check' : 'cross'}">${r.s1 ? '✓' : '✗'}</td>
+        <td class="${r.s2 ? 'check' : 'cross'}">${r.s2 ? '✓' : '✗'}</td>
+        <td class="${r.s3 ? 'check' : 'cross'}">${r.s3 ? '✓' : '✗'}</td>
+        <td class="pts-cell">${r.pts}</td>
+      </tr>`;
+  }).join('');
+
+  app.innerHTML = `
+    <div class="app-header">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <div class="brand-name">Entender para Atender · Resultado Final</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="results-hero">
+        <div class="results-badge">${badge}</div>
+        <div class="results-class">${classification}</div>
+        <div class="results-score-big">${total} <span style="font-size:28px;opacity:0.6;">/ 36</span></div>
+        <div class="results-score-label">pontos obtidos</div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--navy);margin-bottom:14px;">Desempenho por Passo</h3>
+        <div class="score-bar-row">
+          <span class="score-bar-label">Req. da norma</span>
+          <div class="score-bar"><div class="score-bar-fill" style="width:${s1Total/12*100}%"></div></div>
+          <span class="score-bar-pts">${s1Total}/12</span>
+        </div>
+        <div class="score-bar-row">
+          <span class="score-bar-label">Texto normativo</span>
+          <div class="score-bar"><div class="score-bar-fill" style="width:${s2Total/12*100}%"></div></div>
+          <span class="score-bar-pts">${s2Total}/12</span>
+        </div>
+        <div class="score-bar-row">
+          <span class="score-bar-label">Conformidade</span>
+          <div class="score-bar"><div class="score-bar-fill" style="width:${s3Total/12*100}%"></div></div>
+          <span class="score-bar-pts">${s3Total}/12</span>
+        </div>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);">
+          <strong>Classificação:</strong> 32–36 pts = Especialista SGI 🥇 · 24–31 = Gestor Competente 🥈 · 16–23 = Profissional em Formação 🥉 · 0–15 = Aprendiz Iniciante 📚
+        </div>
+      </div>
+
+      <div class="card" style="overflow-x:auto;">
+        <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:18px;color:var(--navy);margin-bottom:14px;">Detalhe por Situação</h3>
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Situação</th>
+              <th>Req.</th>
+              <th>Texto</th>
+              <th>Conf.</th>
+              <th>Pts</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+
+      <button class="restart-btn" onclick="restartApp()">🔄 Reiniciar o simulador</button>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// HANDLERS
+// ═══════════════════════════════════════════════════════════════
+
+function goToBriefing() {
+  state.screen = 'briefing';
+  render();
+}
+
+function startSimulation() {
+  const BANK = situations.length;   // 26
+  const SESSION = 12;
+  state.situationIdx = 0;
+  state.score = 0;
+  state.results = [];
+  state.situationOrder = shuffle(Array.from({length: BANK}, (_, i) => i)).slice(0, SESSION);
+  initSituation(0);
+  state.screen = 'situation';
+  render();
+}
+
+function handleStep1(optIdx) {
+  if (state.stepsDone[0]) return;
+  const opt = state.shuffledStep1[optIdx];
+  const correct = opt.correct;
+  state.stepsDone[0] = true;
+  state.stepCorrect[0] = correct;
+  if (correct) state.score++;
+  state.currentStep = 2;
+
+  // apply visual to buttons
+  state.shuffledStep1.forEach((o, i) => {
+    const btn = document.getElementById('s1opt' + i);
+    if (btn) {
+      btn.disabled = true;
+      if (o.correct) btn.classList.add('correct');
+      else if (i === optIdx) btn.classList.add('wrong');
+    }
+  });
+
+  const fb = document.getElementById('fb1');
+  if (fb) {
+    fb.innerHTML = renderStep1Feedback(currentSit());
+    fb.className = 'feedback-box show ' + (correct ? 'fb-correct' : 'fb-wrong');
+  }
+
+  const s1badge = document.getElementById('s1badge');
+  if (s1badge) { s1badge.textContent = '✓'; s1badge.classList.add('done'); }
+
+  const step2 = document.getElementById('step2-card');
+  if (step2) { step2.style.opacity = '1'; step2.style.pointerEvents = 'auto'; }
+
+  const stepDots = document.querySelectorAll('.step-dot');
+  if (stepDots.length >= 3) {
+    stepDots[0].className = 'step-dot done';
+    stepDots[1].className = 'step-dot active';
+    stepDots[2].className = 'step-dot';
+  }
+}
+
+function handleStep2(optIdx) {
+  if (state.stepsDone[1]) return;
+  const opt = state.shuffledStep2[optIdx];
+  const correct = opt.correct;
+  state.stepsDone[1] = true;
+  state.stepCorrect[1] = correct;
+  if (correct) state.score++;
+  state.currentStep = 3;
+
+  state.shuffledStep2.forEach((o, i) => {
+    const btn = document.getElementById('s2opt' + i);
+    if (btn) {
+      btn.disabled = true;
+      if (o.correct) btn.classList.add('correct');
+      else if (i === optIdx) btn.classList.add('wrong');
+    }
+  });
+
+  const fb = document.getElementById('fb2');
+  if (fb) {
+    fb.innerHTML = renderStep2Feedback(currentSit());
+    fb.className = 'feedback-box show ' + (correct ? 'fb-correct' : 'fb-wrong');
+  }
+
+  const s2badge = document.getElementById('s2badge');
+  if (s2badge) { s2badge.textContent = '✓'; s2badge.classList.add('done'); }
+
+  const step3 = document.getElementById('step3-card');
+  if (step3) { step3.style.opacity = '1'; step3.style.pointerEvents = 'auto'; }
+
+  const stepDots = document.querySelectorAll('.step-dot');
+  if (stepDots.length >= 3) {
+    stepDots[0].className = 'step-dot done';
+    stepDots[1].className = 'step-dot done';
+    stepDots[2].className = 'step-dot active';
+  }
+}
+
+function handleStep3(choseConforming) {
+  if (state.stepsDone[2]) return;
+  const sit = currentSit();
+  const correct = choseConforming === sit.isConforming;
+  state.stepsDone[2] = true;
+  state.stepCorrect[2] = correct;
+  if (correct) state.score++;
+
+  const pts = state.stepCorrect.filter(Boolean).length;
+
+  // update score for THIS situation
+  // (already accumulating in state.score across situations)
+  // we track per-situation results when next is pressed
+
+  const btnConf = document.getElementById('btn-conf');
+  const btnNC = document.getElementById('btn-nc');
+  if (btnConf) { btnConf.disabled = true; if (sit.isConforming) btnConf.classList.add('selected-conforme'); }
+  if (btnNC) { btnNC.disabled = true; if (!sit.isConforming) btnNC.classList.add('selected-nc'); }
+
+  const mf = document.getElementById('mf');
+  if (mf) {
+    mf.innerHTML = renderMainFeedback(sit);
+    mf.classList.add('show');
+  }
+
+  const s3badge = document.getElementById('s3badge');
+  if (s3badge) { s3badge.textContent = '✓'; s3badge.classList.add('done'); }
+
+  // show conform tag
+  const tag = document.getElementById('conform-tag');
+  if (tag) tag.classList.remove('tag-hidden');
+
+  const navBtn = document.getElementById('nav-btn');
+  if (navBtn) navBtn.classList.add('show');
+
+  const scoreDisplay = document.querySelector('.score-pill');
+  if (scoreDisplay) scoreDisplay.textContent = '⭐ ' + state.score + ' / 36 pts';
+
+  const stepDots = document.querySelectorAll('.step-dot');
+  if (stepDots.length >= 3) {
+    stepDots[0].className = 'step-dot done';
+    stepDots[1].className = 'step-dot done';
+    stepDots[2].className = 'step-dot done';
+  }
+}
+
+function nextSituation() {
+  // Save result for this situation
+  const sitPts = state.stepCorrect.filter(Boolean).length;
+  state.results.push({
+    s1: state.stepCorrect[0],
+    s2: state.stepCorrect[1],
+    s3: state.stepCorrect[2],
+    pts: sitPts,
+  });
+
+  if (state.situationIdx < situations.length - 1) {
+    state.situationIdx++;
+    initSituation(state.situationIdx);
+    state.screen = 'situation';
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    state.screen = 'results';
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function restartApp() {
+  state = {
+    screen: 'intro',
+    situationIdx: 0,
+    situationOrder: [],
+    currentStep: 1,
+    stepsDone: [false, false, false],
+    stepCorrect: [null, null, null],
+    score: 0,
+    results: [],
+    shuffledStep1: [],
+    shuffledStep2: [],
+  };
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════
+render();
+</script>
+</body>
+</html>
