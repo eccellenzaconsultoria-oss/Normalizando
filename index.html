@@ -141,7 +141,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-end;
     }
     .intro-hero::before {
       content: '';
@@ -668,6 +668,31 @@
       color: var(--navy);
       width: 40px;
       text-align: right;
+    }
+
+
+    /* ─── CROWN BRAND (top-left hero) ─── */
+    .crown-brand {
+      position: absolute !important;
+      top: 16px !important;
+      left: 20px !important;
+      width: 72px !important;
+      height: auto !important;
+      mix-blend-mode: screen;
+      opacity: 0.95;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .crown-watermark {
+      position: absolute !important;
+      right: -130px !important;
+      top: -40px !important;
+      width: 300px !important;
+      height: auto !important;
+      mix-blend-mode: screen;
+      opacity: 0.13;
+      pointer-events: none;
+      z-index: 1;
     }
 
     @media (max-width: 520px) {
