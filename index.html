@@ -1447,7 +1447,7 @@ function renderBriefing() {
 function renderSituation() {
   if (state.situationIdx < state.results.length) { renderReview(); return; }
   const sit = currentSit();
-  const progress = state.situationIdx / situations.length * 100;
+  const progress = state.situationIdx / 12 * 100;
   const totalScore = state.score;
 
   const conformTag = sit.isConforming
@@ -1470,7 +1470,7 @@ function renderSituation() {
       <div class="score-pill">⭐ ${totalScore} / 36 pts</div>
     </div>
     <div class="progress-wrap">
-      <div class="progress-label">Situação ${state.situationIdx + 1} de ${situations.length}</div>
+      <div class="progress-label">Situação ${state.situationIdx + 1} de 12</div>
       <div class="progress-bar-bg">
         <div class="progress-bar-fill" style="width:${progress}%"></div>
       </div>
@@ -1503,7 +1503,7 @@ function renderSituation() {
             </button>`
           ).join('')}
         </div>
-        <div class="feedback-box ${state.stepsDone[0] ? 'show ' + (state.stepCorrect[0] ? 'fb-correct' : 'fb-wrong') : ''}" id="fb1">
+        <div class="feedback-box ${state.stepsDone[0] ? 'show ' + (state.stepCorrect[0] === true ? 'fb-correct' : state.stepCorrect[0] === 'yellow' ? 'fb-related' : 'fb-wrong') : ''}" id="fb1">
           ${state.stepsDone[0] ? renderStep1Feedback(sit) : ''}
         </div>
       </div>
@@ -1562,7 +1562,7 @@ function renderSituation() {
 function renderStep1Feedback(sit) {
   const r = state.stepCorrect[0];
   if (r === true) return '<div class="fb-title">✓ Requisito raiz identificado!</div>' + sit.step1FeedbackCorrect;
-  if (r === 'yellow') return '<div class="fb-title">~ Requisito relacionado — não é o que vai mais na veia. (+0,5 pt)</div>Você identificou uma NC real aqui — bom raciocínio. Mas há um requisito que vai mais fundo.<div class="fb-correct-reveal"><strong>Requisito raiz:</strong> Cláusula ' + clauseLabel(sit.correctReq) + ' — ' + reqNames[sit.correctReq] + '</div>';
+  if (r === 'yellow') return '<div class="fb-title">~ Requisito relacionado — não é o que vai mais na veia. (+0,5 pt)</div>Bom raciocínio — esse requisito está presente no cenário, mas há um que vai mais fundo.<div class="fb-correct-reveal"><strong>Requisito raiz:</strong> Cláusula ' + clauseLabel(sit.correctReq) + ' — ' + reqNames[sit.correctReq] + '</div>';
   return '<div class="fb-title">✗ Esse requisito não se aplica a este cenário.</div>' + sit.step1FeedbackWrong + '<div class="fb-correct-reveal"><strong>Requisito raiz:</strong> Cláusula ' + clauseLabel(sit.correctReq) + ' — ' + reqNames[sit.correctReq] + '</div>';
 }
 
@@ -1794,7 +1794,6 @@ function handleStep2(optIdx) {
     if (btn) {
       btn.disabled = true;
       if (o.correct) btn.classList.add('correct');
-      else if (i === optIdx && isRelated) btn.classList.add('related');
       else if (i === optIdx) btn.classList.add('wrong');
     }
   });
@@ -1822,7 +1821,7 @@ function handleStep2(optIdx) {
     const fb = document.getElementById('fb2');
     if (fb) {
       fb.innerHTML = renderStep2Feedback(currentSit());
-      fb.className = 'feedback-box show ' + (isRoot ? 'fb-correct' : isRelated ? 'fb-related' : 'fb-wrong');
+      fb.className = 'feedback-box show ' + (correct ? 'fb-correct' : 'fb-wrong');
     }
   } catch(e) {
     console.warn('Feedback step2 error:', e);
@@ -1881,7 +1880,7 @@ function nextSituation() {
   const sitPts = (state.stepCorrect[0]===true?1:state.stepCorrect[0]==='yellow'?0.5:0)+(state.stepCorrect[1]?1:0)+(state.stepCorrect[2]?1:0);
   state.results.push({s1:state.stepCorrect[0],s2:state.stepCorrect[1],s3:state.stepCorrect[2],pts:sitPts,chosenReq:state.lastChosenReq,chosenNormReq:state.lastChosenNormReq,chosenConforming:state.lastChosenConforming});
 
-  if (state.situationIdx < situations.length - 1) {
+  if (state.situationIdx < 11) {
     state.situationIdx++;
     initSituation(state.situationIdx);
     state.screen = 'situation';
